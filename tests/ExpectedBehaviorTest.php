@@ -345,7 +345,6 @@ class ExpectedBehaviorTest extends TestCase
         $uuid = \Mockery::mock('Ramsey\Uuid\UuidInterface');
 
         $factory = \Mockery::mock('Ramsey\Uuid\UuidFactoryInterface', [
-            'uuid1' => $uuid,
             'uuid3' => $uuid,
             'uuid4' => $uuid,
             'uuid5' => $uuid,
@@ -356,7 +355,6 @@ class ExpectedBehaviorTest extends TestCase
 
         Uuid::setFactory($factory);
 
-        $this->assertSame($uuid, Uuid::uuid1('ffffffffffff', 0xffff));
         $this->assertSame($uuid, Uuid::uuid3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
         $this->assertSame($uuid, Uuid::uuid4());
         $this->assertSame($uuid, Uuid::uuid5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
@@ -476,9 +474,6 @@ class ExpectedBehaviorTest extends TestCase
      */
     public function testHelperFunctions()
     {
-        $uuid1 = \Mockery::mock('Ramsey\Uuid\UuidInterface', [
-            'toString' => 'aVersion1Uuid',
-        ]);
         $uuid3 = \Mockery::mock('Ramsey\Uuid\UuidInterface', [
             'toString' => 'aVersion3Uuid',
         ]);
@@ -490,7 +485,6 @@ class ExpectedBehaviorTest extends TestCase
         ]);
 
         $factory = \Mockery::mock('Ramsey\Uuid\UuidFactoryInterface', [
-            'uuid1' => $uuid1,
             'uuid3' => $uuid3,
             'uuid4' => $uuid4,
             'uuid5' => $uuid5,
@@ -498,7 +492,6 @@ class ExpectedBehaviorTest extends TestCase
 
         Uuid::setFactory($factory);
 
-        $this->assertSame('aVersion1Uuid', \Ramsey\Uuid\v1('ffffffffffff', 0xffff));
         $this->assertSame('aVersion3Uuid', \Ramsey\Uuid\v3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
         $this->assertSame('aVersion4Uuid', \Ramsey\Uuid\v4());
         $this->assertSame('aVersion5Uuid', \Ramsey\Uuid\v5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));

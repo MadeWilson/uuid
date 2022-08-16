@@ -67,7 +67,7 @@ class UuidBuilder implements UuidBuilderInterface
 
             switch ($fields->getVersion()) {
                 case Version::Time:
-                    return new UuidV1($fields, $this->numberConverter, $codec, $this->timeConverter);
+                    return new UuidV1($fields);
                 case Version::DceSecurity:
                     return new UuidV2($fields, $this->numberConverter, $codec, $this->timeConverter);
                 case Version::HashMd5:

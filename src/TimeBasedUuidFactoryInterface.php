@@ -20,11 +20,16 @@ use Ramsey\Uuid\Type\Hexadecimal;
 /**
  * TimeBasedUuidFactoryInterface defines common functionality all factories for
  * time-based UUIDs must implement
- *
- * @psalm-immutable
  */
 interface TimeBasedUuidFactoryInterface extends UuidFactoryInterface
 {
+    public function create(): TimeBasedUuidInterface;
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function fromBytes(string $bytes): TimeBasedUuidInterface;
+
     /**
      * Creates a UUID from a DateTimeInterface instance
      *
@@ -35,14 +40,22 @@ interface TimeBasedUuidFactoryInterface extends UuidFactoryInterface
      *     duplicates that could arise when the clock is set backwards in time
      *     or if the node ID changes
      *
-     * @return UuidInterface A UuidInterface instance that represents a
+     * @return TimeBasedUuidInterface An instance that represents a
      *     UUID created from a DateTimeInterface instance
-     *
-     * @psalm-pure
      */
     public function fromDateTime(
         DateTimeInterface $dateTime,
         ?Hexadecimal $node = null,
         ?int $clockSeq = null
-    ): UuidInterface;
+    ): TimeBasedUuidInterface;
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function fromInteger(string $integer): TimeBasedUuidInterface;
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function fromString(string $uuid): TimeBasedUuidInterface;
 }

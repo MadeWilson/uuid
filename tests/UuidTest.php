@@ -1598,7 +1598,11 @@ class UuidTest extends TestCase
         string $staticMethod,
         array $args = []
     ): void {
-        $this->assertInstanceOf(LazyUuidFromString::class, Uuid::$staticMethod(...$args));
+        if ($staticMethod === 'uuid1') {
+            $this->assertInstanceOf(UuidV1::class, Uuid::$staticMethod(...$args));
+        } else {
+            $this->assertInstanceOf(LazyUuidFromString::class, Uuid::$staticMethod(...$args));
+        }
     }
 
     /**
@@ -1610,6 +1614,7 @@ class UuidTest extends TestCase
         string $staticMethod,
         array $args = []
     ): void {
+        /** @var UuidInterface $generated */
         $generated = Uuid::$staticMethod(...$args);
 
         self::assertSame(
@@ -1627,6 +1632,7 @@ class UuidTest extends TestCase
         string $staticMethod,
         array $args = []
     ): void {
+        /** @var UuidInterface $generated */
         $generated = Uuid::$staticMethod(...$args);
 
         self::assertSame(

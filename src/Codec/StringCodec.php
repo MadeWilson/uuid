@@ -106,11 +106,7 @@ class StringCodec implements CodecInterface
      */
     protected function getBytes(string $encodedUuid): string
     {
-        $parsedUuid = str_replace(
-            ['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}', '-'],
-            '',
-            $encodedUuid
-        );
+        $parsedUuid = str_replace(Uuid::REPLACE_TO_HEXADECIMAL, '', $encodedUuid);
 
         $components = [
             substr($parsedUuid, 0, 8),

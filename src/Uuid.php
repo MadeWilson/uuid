@@ -19,6 +19,7 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
+use Ramsey\Uuid\Rfc4122\Factories\UuidV1Factory;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidInterface as Rfc4122UuidInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
@@ -111,6 +112,24 @@ class Uuid implements Rfc4122UuidInterface
         self::DCE_DOMAIN_GROUP => 'group',
         self::DCE_DOMAIN_ORG => 'org',
     ];
+
+    /**
+     * A list of values to strip from a string UUID representation to arrive at
+     * the string standard representation
+     *
+     * @internal Do not rely on this constant in your applications. It has no
+     *     backwards-compatibility guarantee between versions.
+     */
+    public const REPLACE_TO_STRING_STANDARD = ['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}'];
+
+    /**
+     * A list of values to strip from a string UUID representation to arrive at
+     * a hexadecimal string representation
+     *
+     * @internal Do not rely on this constant in your applications. It has no
+     *     backwards-compatibility guarantee between versions.
+     */
+    public const REPLACE_TO_HEXADECIMAL = [...self::REPLACE_TO_STRING_STANDARD, '-'];
 
     private static ?UuidFactoryInterface $factory = null;
 
@@ -451,7 +470,12 @@ class Uuid implements Rfc4122UuidInterface
      */
     public static function uuid1(Hexadecimal | int | string | null $node = null, ?int $clockSeq = null): UuidInterface
     {
-        return self::getFactory()->uuid1($node, $clockSeq);
+        /** @var UuidFactory $factory */
+        $factory = self::getFactory();
+        $timeGenerator = $factory->getTimeGenerator();
+        $nodeProvider = $factory->getNodeProvider();
+
+        return (new UuidV1Factory($timeGenerator, $nodeProvider))->create($node, $clockSeq);
     }
 
     /**

@@ -19,6 +19,7 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Generator\NameGeneratorInterface;
@@ -490,5 +491,10 @@ class UuidFactory implements UuidFactoryInterface
         }
 
         return $this->uuid($bytesWithVariantAndVersion);
+    }
+
+    public function create(): UuidInterface
+    {
+        throw new UnsupportedOperationException();
     }
 }

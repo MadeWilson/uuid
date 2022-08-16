@@ -28,6 +28,8 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 interface UuidInterface extends JsonSerializable
 {
     /**
+     * Generates a storable representation of the UuidInterface instance object
+     *
      * @return mixed[]
      */
     public function __serialize(): array;
@@ -40,6 +42,9 @@ interface UuidInterface extends JsonSerializable
     public function __toString(): string;
 
     /**
+     * Creates a UuidInterface instance from a stored representation created
+     * from serializing a UuidInterface instance
+     *
      * @param mixed[] $data
      */
     public function __unserialize(array $data): void;

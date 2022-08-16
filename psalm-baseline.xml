@@ -80,6 +80,11 @@
       <code>$macs[]</code>
     </MixedArrayAssignment>
   </file>
+  <file src="src/Rfc4122/Factories/UuidV1Factory.php">
+    <DeprecatedInterface occurrences="1">
+      <code>UuidV1Factory</code>
+    </DeprecatedInterface>
+  </file>
   <file src="src/Rfc4122/UuidBuilder.php">
     <ImpureVariable occurrences="15">
       <code>$this</code>
@@ -100,9 +105,20 @@
     </ImpureVariable>
   </file>
   <file src="src/Rfc4122/UuidV1.php">
-    <DeprecatedMethod occurrences="1">
-      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
-    </DeprecatedMethod>
+    <InaccessibleProperty occurrences="8">
+      <code>$this-&gt;lazyBytes</code>
+      <code>$this-&gt;lazyBytes</code>
+      <code>$this-&gt;lazyBytes</code>
+      <code>$this-&gt;lazyBytes</code>
+      <code>$this-&gt;lazyFields</code>
+      <code>$this-&gt;lazyFields</code>
+      <code>$this-&gt;lazyUuid</code>
+      <code>$this-&gt;lazyUuid</code>
+    </InaccessibleProperty>
+    <UnusedMethodCall occurrences="2">
+      <code>__construct</code>
+      <code>setValueForVersion</code>
+    </UnusedMethodCall>
   </file>
   <file src="src/Rfc4122/UuidV2.php">
     <DeprecatedMethod occurrences="1">
@@ -135,11 +151,12 @@
     </InaccessibleProperty>
   </file>
   <file src="src/Uuid.php">
-    <DeprecatedClass occurrences="2">
+    <DeprecatedClass occurrences="3">
+      <code>$factory</code>
       <code>new UuidFactory()</code>
       <code>new UuidFactory()</code>
     </DeprecatedClass>
-    <DeprecatedMethod occurrences="21">
+    <DeprecatedMethod occurrences="20">
       <code>fromDateTime</code>
       <code>getValidator</code>
       <code>self::getFactory()</code>
@@ -155,7 +172,6 @@
       <code>self::getFactory()</code>
       <code>self::getFactory()</code>
       <code>self::getFactory()</code>
-      <code>uuid1</code>
       <code>uuid2</code>
       <code>uuid3</code>
       <code>uuid4</code>

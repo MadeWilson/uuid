@@ -17,11 +17,17 @@ namespace Ramsey\Uuid;
 /**
  * UuidFactoryInterface defines common functionality all `UuidFactory` instances
  * must implement
- *
- * @psalm-immutable
  */
 interface UuidFactoryInterface extends DeprecatedUuidFactoryInterface
 {
+    /**
+     * Creates a new instance of a UUID
+     *
+     * @return UuidInterface A UuidInterface instance created according to the
+     *     rules of the factory
+     */
+    public function create(): UuidInterface;
+
     /**
      * Creates a UUID from a byte string
      *
@@ -30,7 +36,7 @@ interface UuidFactoryInterface extends DeprecatedUuidFactoryInterface
      * @return UuidInterface A UuidInterface instance created from a binary
      *     string representation
      *
-     * @psalm-pure
+     * @psalm-mutation-free
      */
     public function fromBytes(string $bytes): UuidInterface;
 
@@ -42,7 +48,7 @@ interface UuidFactoryInterface extends DeprecatedUuidFactoryInterface
      * @return UuidInterface A UuidInterface instance created from the string
      *     representation of a 128-bit integer
      *
-     * @psalm-pure
+     * @psalm-mutation-free
      */
     public function fromInteger(string $integer): UuidInterface;
 
@@ -54,7 +60,7 @@ interface UuidFactoryInterface extends DeprecatedUuidFactoryInterface
      * @return UuidInterface A UuidInterface instance created from a hexadecimal
      *     string representation
      *
-     * @psalm-pure
+     * @psalm-mutation-free
      */
     public function fromString(string $uuid): UuidInterface;
 }

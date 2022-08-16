@@ -5,18 +5,11 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Rfc4122;
 
 use DateTimeImmutable;
-use Mockery;
-use Ramsey\Uuid\Codec\CodecInterface;
-use Ramsey\Uuid\Converter\NumberConverterInterface;
-use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Test\TestCase;
-use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 
 class UuidV1Test extends TestCase
@@ -26,25 +19,21 @@ class UuidV1Test extends TestCase
      */
     public function testConstructorThrowsExceptionWhenFieldsAreNotValidForType(Version $version): void
     {
-        $fields = Mockery::mock(FieldsInterface::class, [
+        $fields = $this->mockery(FieldsInterface::class, [
             'getVersion' => $version,
+            'getBytes' => 'foobar',
         ]);
-
-        $numberConverter = Mockery::mock(NumberConverterInterface::class);
-        $codec = Mockery::mock(CodecInterface::class);
-        $timeConverter = Mockery::mock(TimeConverterInterface::class);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Fields used to create a UuidV1 must represent a '
-            . 'version 1 (time-based) UUID'
+            'The value used to create a Ramsey\\Uuid\\Rfc4122\\UuidV1 must represent a version 1 UUID'
         );
 
-        new UuidV1($fields, $numberConverter, $codec, $timeConverter);
+        new UuidV1($fields);
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{version: Version}>
      */
     public function provideTestVersions(): array
     {
@@ -61,6 +50,7 @@ class UuidV1Test extends TestCase
 
     /**
      * @param non-empty-string $uuid
+     * @param non-empty-string $expected
      *
      * @dataProvider provideUuidV1WithOddMicroseconds
      */
@@ -76,7 +66,7 @@ class UuidV1Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuid: non-empty-string, expected: non-empty-string}>
      */
     public function provideUuidV1WithOddMicroseconds(): array
     {
@@ -98,26 +88,5 @@ class UuidV1Test extends TestCase
                 'expected' => '-1.000000',
             ],
         ];
-    }
-
-    public function testGetDateTimeThrowsException(): void
-    {
-        $fields = Mockery::mock(FieldsInterface::class, [
-            'getVersion' => Version::Time,
-            'getTimestamp' => new Hexadecimal('0'),
-        ]);
-
-        $numberConverter = Mockery::mock(NumberConverterInterface::class);
-        $codec = Mockery::mock(CodecInterface::class);
-
-        $timeConverter = Mockery::mock(TimeConverterInterface::class, [
-            'convertTime' => new Time('0', '1234567'),
-        ]);
-
-        $uuid = new UuidV1($fields, $numberConverter, $codec, $timeConverter);
-
-        $this->expectException(DateTimeException::class);
-
-        $uuid->getDateTime();
     }
 }
